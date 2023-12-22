@@ -25,7 +25,10 @@ $customer->addRental(
 
 $statement = new Statement($customer);
 $plainTextStatement = $statement->getPlainText();
+$HTMLTextStatement = $statement->getHTML();
 
 echo '<pre>';
 echo $plainTextStatement;
 echo '</pre>';
+
+echo $HTMLTextStatement;

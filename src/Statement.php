@@ -1,6 +1,6 @@
 <?php
 
-class Statement 
+class Statement
 {
     private $totalAmount = 0;
     private $frequentRenterPoints = 0;
@@ -22,7 +22,7 @@ class Statement
             switch ($rental->getMovie()->getPriceCode()) {
                 case Movie::REGULAR:
                     $thisAmount += 2;
-                    if($rental->getDaysRented() > 2)
+                    if ($rental->getDaysRented() > 2)
                         $thisAmount += ($rental->getDaysRented() - 2) * 1.5;
                     break;
                 case Movie::NEW_RELEASE:
@@ -30,8 +30,8 @@ class Statement
                     break;
                 case Movie::CHILDRENS:
                     $thisAmount += 1.5;
-                    if($rental->getDaysRented() > 3)
-                        $thisAmount += ($rental->getDaysRented() - 3) *1.5;
+                    if ($rental->getDaysRented() > 3)
+                        $thisAmount += ($rental->getDaysRented() - 3) * 1.5;
                     break;
             }
 
@@ -39,21 +39,29 @@ class Statement
             $this->frequentRenterPoints++;
 
             // add bonus for a two day new release rental
-            if (($rental->getMovie()->getPriceCode() == Movie::NEW_RELEASE) &&
-                    $rental->getDaysRented() > 1) $this->frequentRenterPoints++;
+            if (
+                ($rental->getMovie()->getPriceCode() == Movie::NEW_RELEASE) &&
+                $rental->getDaysRented() > 1
+            )
+                $this->frequentRenterPoints++;
 
             // show figures for this rental
             $result .= "\t" . $rental->getMovie()->getTitle() . "\t" .
-                        $thisAmount . "\n";
+                $thisAmount . "\n";
             $this->totalAmount += $thisAmount;
         }
 
         // add footer lines
         $result .= "Amount owed is " . $this->totalAmount . "\n";
         $result .= "You earned " . $this->frequentRenterPoints .
-                " frequent renter points";
+            " frequent renter points";
 
         return $result;
+    }
+
+    public function getHTML(): string
+    {
+        return "";
     }
 
 }

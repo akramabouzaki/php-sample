@@ -6,11 +6,16 @@ require_once("$codedir/Movie.php");
 require_once("$codedir/Rental.php");
 require_once("$codedir/Customer.php");
 require_once("$codedir/Statement.php");
+require_once("$codedir/Classification.php");
 
 
-$prognosisNegative = new Movie("Prognosis Negative", Movie::NEW_RELEASE);
-$sackLunch = new Movie("Sack Lunch", Movie::CHILDRENS);
-$painAndYearning = new Movie("The Pain and the Yearning", Movie::REGULAR);
+$regular = new Classification(ClassificationType::REGULAR, 2.0, 2, 1.5, false);
+$childrens = new Classification(ClassificationType::CHILDRENS, 1.5, 3, 1.5, false);
+$newRelease = new Classification(ClassificationType::NEW_RELEASE, 0.0, 0, 3, true);
+
+$prognosisNegative = new Movie("Prognosis Negative", $newRelease);
+$sackLunch = new Movie("Sack Lunch", $childrens);
+$painAndYearning = new Movie("The Pain and the Yearning", $regular);
 
 $customer = new Customer("Susan Ross");
 $customer->addRental(

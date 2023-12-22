@@ -8,29 +8,38 @@ require_once("$codedir/Movie.php");
 require_once("$codedir/Rental.php");
 require_once("$codedir/Customer.php");
 require_once("$codedir/Statement.php");
-
+require_once("$codedir/Classification.php");
 
 final class StatementTest extends TestCase
 {
     private function initialize(): Statement{
-        $prognosisNegative = new Movie("Prognosis Negative", Movie::NEW_RELEASE);
-        $sackLunch = new Movie("Sack Lunch", Movie::CHILDRENS);
-        $painAndYearning = new Movie("The Pain and the Yearning", Movie::REGULAR);
-        $prognosisRental = new Rental($prognosisNegative, 3);
-        $painRental = new Rental($painAndYearning, 1);
-        $sackRental = new Rental($sackLunch, 1);
-
+        $regular = new Classification(ClassificationType::REGULAR, 2.0, 2, 1.5, false);
+        $childrens = new Classification(ClassificationType::CHILDRENS, 1.5, 3, 1.5, false);
+        $newRelease = new Classification(ClassificationType::NEW_RELEASE, 0.0, 0, 3, true);
+        
+        $prognosisNegative = new Movie("Prognosis Negative", $newRelease);
+        $sackLunch = new Movie("Sack Lunch", $childrens);
+        $painAndYearning = new Movie("The Pain and the Yearning", $regular);
+        
         $customer = new Customer("Susan Ross");
-        $customer->addRental($prognosisRental);
-        $customer->addRental($painRental);
-        $customer->addRental($sackRental);
-
+        $customer->addRental(
+          new Rental($prognosisNegative, 3)
+        );
+        $customer->addRental(
+          new Rental($painAndYearning, 1)
+        );
+        $customer->addRental(
+          new Rental($sackLunch, 1)
+        );
+        
         $statement = new Statement($customer);
         return $statement;
     }
+
     public function testGetRentalPrice()
     {
-        $prognosisNegative = new Movie("Prognosis Negative", Movie::NEW_RELEASE);
+        $newRelease = new Classification(ClassificationType::NEW_RELEASE, 0.0, 0, 3, true);
+        $prognosisNegative = new Movie("Prognosis Negative", $newRelease);
         $prognosisRental = new Rental($prognosisNegative, 3);
         $customer = new Customer("Susan Ross");
         $customer->addRental($prognosisRental);
@@ -41,7 +50,8 @@ final class StatementTest extends TestCase
 
     public function testGetFrequentRenterPoints()
     {
-        $prognosisNegative = new Movie("Prognosis Negative", Movie::NEW_RELEASE);
+        $newRelease = new Classification(ClassificationType::NEW_RELEASE, 0.0, 0, 3, true);
+        $prognosisNegative = new Movie("Prognosis Negative", $newRelease);
         $prognosisRental = new Rental($prognosisNegative, 3);
         $customer = new Customer("Susan Ross");
         $customer->addRental($prognosisRental);

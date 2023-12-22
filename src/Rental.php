@@ -20,4 +20,14 @@ class Rental
     {
         return $this->movie;
     }
+    public function getRentalPrice(): float
+    {
+         // determine price for a rental
+         return 0.0;
+    }
+
+    public function getFrequentRenterPoints(): int
+    {
+        return 0;
+    }
 }

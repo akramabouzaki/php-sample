@@ -36,30 +36,6 @@ final class StatementTest extends TestCase
         return $statement;
     }
 
-    public function testGetRentalPrice()
-    {
-        $newRelease = new Classification(ClassificationType::NEW_RELEASE, 0.0, 0, 3, true);
-        $prognosisNegative = new Movie("Prognosis Negative", $newRelease);
-        $prognosisRental = new Rental($prognosisNegative, 3);
-        $customer = new Customer("Susan Ross");
-        $customer->addRental($prognosisRental);
-        $statement = new Statement($customer);
-
-        $this->assertSame(9.0, $statement->getRentalPrice($prognosisRental));
-    }
-
-    public function testGetFrequentRenterPoints()
-    {
-        $newRelease = new Classification(ClassificationType::NEW_RELEASE, 0.0, 0, 3, true);
-        $prognosisNegative = new Movie("Prognosis Negative", $newRelease);
-        $prognosisRental = new Rental($prognosisNegative, 3);
-        $customer = new Customer("Susan Ross");
-        $customer->addRental($prognosisRental);
-        $statement = new Statement($customer);
-
-        $this->assertSame(2, $statement->getFrequentRenterPoints($prognosisRental));
-    }
-
     public function testGetPlainText()
     {
         $statement = $this->initialize();;

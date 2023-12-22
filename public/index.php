@@ -5,6 +5,8 @@ $codedir = '../src';
 require_once("$codedir/Movie.php");
 require_once("$codedir/Rental.php");
 require_once("$codedir/Customer.php");
+require_once("$codedir/Statement.php");
+
 
 $prognosisNegative = new Movie("Prognosis Negative", Movie::NEW_RELEASE);
 $sackLunch = new Movie("Sack Lunch", Movie::CHILDRENS);
@@ -21,8 +23,9 @@ $customer->addRental(
   new Rental($sackLunch, 1)
 );
 
-$statement = $customer->statement();
+$statement = new Statement($customer);
+$plainTextStatement = $statement->getPlainText();
 
 echo '<pre>';
-echo $statement;
+echo $plainTextStatement;
 echo '</pre>';

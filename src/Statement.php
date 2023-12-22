@@ -11,31 +11,6 @@ class Statement
         $this->customer = $customer;
     }
 
-    public function getRentalPrice(Rental $rental): float
-    {
-         // determine price for a rental
-         $classification = $rental->getMovie()->getClassification();
-         $freeDays = $classification->getFreeOfChargeDays();
-         $thisAmount = $classification->getBaseCost();
-         if($rental->getDaysRented() > $freeDays){
-             $thisAmount += ($rental->getDaysRented() - $freeDays) * $classification->getRentalMultiplier();
-         }
-        
-        return $thisAmount;  
-    }
-
-    public function getFrequentRenterPoints(Rental $rental): int
-    {
-        // add bonus for a two day new release rental
-        if (
-            ($rental->getMovie()->getClassification()->getFrequentRenterPointsBonus()) &&
-            $rental->getDaysRented() > 1
-        ) {
-            return 2;
-        }
-        return 1;
-    }
-
     public function getPlainText(): string
     {
         //reset frequent renter points & total amount before we update them for the current statement
@@ -46,8 +21,8 @@ class Statement
 
         // determine amounts for each line
         foreach ($this->customer->getRentals() as $rental) {
-            $thisAmount = $this->getRentalPrice($rental);
-            $this->frequentRenterPoints += $this->getFrequentRenterPoints($rental);
+            $thisAmount = $rental->getRentalPrice();
+            $this->frequentRenterPoints += $rental->getFrequentRenterPoints();
 
             // show figures for this rental
             $result .= "\t" . $rental->getMovie()->getTitle() . "\t" .
@@ -73,8 +48,8 @@ class Statement
 
         // determine amounts for each line
         foreach ($this->customer->getRentals() as $rental) {
-            $thisAmount = $this->getRentalPrice($rental);
-            $this->frequentRenterPoints += $this->getFrequentRenterPoints($rental);
+            $thisAmount = $rental->getRentalPrice($rental);
+            $this->frequentRenterPoints += $rental->getFrequentRenterPoints($rental);
 
             // show figures for this rental
             $result .= "<p>" . $rental->getMovie()->getTitle() . ": " .
@@ -91,6 +66,3 @@ class Statement
     }
 
 }
-
-
-?>

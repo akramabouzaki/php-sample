@@ -23,11 +23,25 @@ class Rental
     public function getRentalPrice(): float
     {
          // determine price for a rental
-         return 0.0;
+         $classification = $this->getMovie()->getClassification();
+         $freeDays = $classification->getFreeOfChargeDays();
+         $thisAmount = $classification->getBaseCost();
+         if($this->getDaysRented() > $freeDays){
+             $thisAmount += ($this->getDaysRented() - $freeDays) * $classification->getRentalMultiplier();
+         }
+        
+        return $thisAmount;  
     }
 
     public function getFrequentRenterPoints(): int
     {
-        return 0;
+        // add bonus for a two day new release rental
+        if (
+            ($this->getMovie()->getClassification()->getFrequentRenterPointsBonus()) &&
+            $this->getDaysRented() > 1
+        ) {
+            return 2;
+        }
+        return 1;
     }
 }

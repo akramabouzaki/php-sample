@@ -11,6 +11,14 @@ class Statement
         $this->customer = $customer;
     }
 
+    public function getRentalPrice(Rental $rental): float {
+        return 0;
+    }
+
+    public function getFrequentRenterPoints(Rental $rental): int {
+        return 0;
+    }
+
     public function getPlainText(): string
     {
         $result = "Rental Record for " . $this->customer->getName() . "\n";

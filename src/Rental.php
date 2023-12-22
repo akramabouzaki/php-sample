@@ -26,7 +26,8 @@ class Rental
          $classification = $this->getMovie()->getClassification();
          $freeDays = $classification->getFreeOfChargeDays();
          $thisAmount = $classification->getBaseCost();
-         if($this->getDaysRented() > $freeDays){
+         if($this->getDaysRented() > $freeDays)
+         {
              $thisAmount += ($this->getDaysRented() - $freeDays) * $classification->getRentalMultiplier();
          }
         
@@ -36,12 +37,12 @@ class Rental
     public function getFrequentRenterPoints(): int
     {
         // add bonus for a two day new release rental
-        if (
-            ($this->getMovie()->getClassification()->getFrequentRenterPointsBonus()) &&
-            $this->getDaysRented() > 1
-        ) {
+        if (($this->getMovie()->getClassification()->getFrequentRenterPointsBonus()) &&
+            $this->getDaysRented() > 1) 
+        {
             return 2;
         }
+        
         return 1;
     }
 }
